@@ -1,35 +1,56 @@
-array =[10, 9, 8]
-index = 0
-differences = []
+require 'json'
 
-while index < (array.length - 1)
-  if array[index] < array[index + 1]
-    differences << :up
-  elsif array[index] > array[index + 1]
-    differences << :down
-  else
-    differences << :even
+@students = JSON.parse(File.read('data/grades.json'))
+
+decline_count = 0
+
+@students.each_value do |value|
+
+  array = value
+  index = 0
+  differences = []
+
+  while index < (array.length - 1)
+    if array[index] < array[index + 1]
+      differences << :up
+    elsif array[index] > array[index + 1]
+      differences << :down
+    else
+      differences << :even
+    end
+    index += 1
   end
-  index += 1
+
+  p differences
+
+  array_index = 0
+  number_of_downs = 0
+
+  if differences.last == :up || differences.last == :even || differences.length < 3
+    puts "not in decline"
+  else
+    while (array_index < (differences.length - 1))
+      if differences[array_index] == :down
+        number_of_downs += 1
+        if number_of_downs == 3
+          puts "in decline"
+          decline_count +=1
+          break
+        end
+      elsif differences[array_index] == :up
+        number_of_downs = 0
+      end
+      array_index += 1
+    end
+    if number_of_downs < 3
+      puts "not in decline"
+    end
+  end
+
 end
 
-p differences
-
-array_index = 0
-number_of_downs = 0
-
-if differences.last == :up || differences.last == :even || differences.length < 3
-  puts "not in decline"
-else
-  # while (array_index < (differences.length - 1)) && (number_of_downs < 3)
-  #   if differences[array_index] == :down
-  #     number_of_downs += 1
-  #   end
-  #   array_index += 1
-  # end
-  puts "in decline"
-end
-
+puts "This many students are in decline:"
+puts decline_count
 
 # count = 0
 # ind = 0
