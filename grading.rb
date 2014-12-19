@@ -26,47 +26,23 @@ decline_count = 0
   array_index = 0
   number_of_downs = 0
 
-  if differences.last == :up || differences.last == :even || differences.length < 3
-    puts "not in decline"
-  else
-    while (array_index < (differences.length - 1))
-      if differences[array_index] == :down
-        number_of_downs += 1
-        if number_of_downs == 3
-          puts "in decline"
-          decline_count +=1
-          break
-        end
-      elsif differences[array_index] == :up
-        number_of_downs = 0
+  while (array_index < (differences.length))
+    if differences[array_index] == :down
+      number_of_downs += 1
+      if number_of_downs == 3 && (differences.length - array_index) < 3
+        puts "in decline"
+        decline_count +=1
+        break
       end
-      array_index += 1
+    elsif differences[array_index] == :up
+      number_of_downs = 0
     end
-    if number_of_downs < 3
-      puts "not in decline"
-    end
+    array_index += 1
   end
-
+  if number_of_downs < 3
+    puts "not in decline"
+  end
 end
 
 puts "This many students are in decline:"
 puts decline_count
-
-# count = 0
-# ind = 0
-# while ind < (differences.length)
-#   if differences[ind] == :down
-#     count += 1
-#   elsif differences[ind] == :up
-#     count -= 1
-#   else differences[ind] == :even
-#     count
-#   end
-#   ind += 1
-# end
-
-# if count >= 3
-#   puts "in decline"
-# else
-#   puts "not in decline"
-# end
